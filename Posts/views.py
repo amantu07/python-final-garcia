@@ -1,12 +1,20 @@
 from django.shortcuts import render
+from django.http import HttpResponse
 from django.http import HttpResponseRedirect
 from .models import *
 from .forms import *
+from django.db.models import Q
 
 
 def index(request):
+    busqueda = request.GET.get("buscar")
     post = Post.objects.all()
- 
+    if busqueda:
+        post= Post.objects.filter(
+            Q(titulo__icontains = busqueda) |
+            Q(contenido__icontains = busqueda)
+        ).distinct
+     
     return render(request, 'index.html', {'post':post})
 
 
@@ -42,6 +50,7 @@ def contacto(request):
         form = ContactForm
 
     return render(request, 'contacto.html', {'form':form})
+
 
 def nuevo_post(request):
     if request.method == 'POST':
