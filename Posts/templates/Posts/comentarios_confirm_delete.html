@@ -1,0 +1,14 @@
+{% extends 'padre.html' %}
+
+{% load static %}
+
+{% block contenidoDinamico %}
+<div class="container">
+<form method="post">{% csrf_token %}
+    <p>
+        ¿Estás seguro que deseas borrar el comentario?
+    </p>
+    <input type="submit" class="btn btn-lg btn-danger" value="Eliminar" />
+</form>
+</div>
+{% endblock %}

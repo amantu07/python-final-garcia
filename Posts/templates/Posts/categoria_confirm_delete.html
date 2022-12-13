@@ -1,0 +1,16 @@
+{% extends 'padre.html' %}
+
+{% load static %}
+
+{% block contenidoDinamico %}
+<div class="container">
+<form method="post">{% csrf_token %}
+    <p>
+        ¿Estás seguro que deseas borrar la categoria "{{ object.title }}"?
+    </p>
+    <input type="submit" class="btn btn-sm btn-danger" value="Eliminar" />
+</form>
+<p class="p-1"><a href="../categorias"><button class="btn btn-sm btn-dark">Volver</button></a></p>
+
+</div>
+{% endblock %}

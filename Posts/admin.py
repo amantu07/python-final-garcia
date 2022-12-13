@@ -2,9 +2,11 @@ from django.contrib import admin
 from  .models import *
 
 class PostAdmin(admin.ModelAdmin):
-    fields = ('titulo','slug','contenido')
+    fields = ('titulo','contenido', 'categoria','autor','destacado')
 
-    prepopulated_fields = {'slug':('titulo',)}
+admin.site.register(Categoria)
+
+admin.site.register(Autor)
 
 admin.site.register(Post,PostAdmin)
 

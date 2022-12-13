@@ -4,18 +4,35 @@ from django.http import HttpResponseRedirect
 from .models import *
 from .forms import *
 from django.db.models import Q
+from django.views.generic import ListView
+from django.views.generic.edit import CreateView,UpdateView,DeleteView
 
 
 def index(request):
+    destacados = Post.objects.filter(destacado=True)    
+    return render(request, 'index.html', {'destacados':destacados})
+
+def buscar(request):
     busqueda = request.GET.get("buscar")
-    post = Post.objects.all()
     if busqueda:
         post= Post.objects.filter(
             Q(titulo__icontains = busqueda) |
             Q(contenido__icontains = busqueda)
         ).distinct
-     
-    return render(request, 'index.html', {'post':post})
+    return render(request, 'resultado.html', {'post':post})
+    
+
+def all_post(request):
+    post = Post.objects.all()  
+    return render(request, 'all_post.html', {'post':post})
+
+def categorias(request):
+    categorias = Categoria.objects.all()
+    return render(request, 'categorias.html', {'categorias':categorias})
+
+def autores(request):
+    autor = Autor.objects.all()
+    return render(request, 'autores.html', {'autores':autor})
 
 
 def post_detail(request,post_id):
@@ -51,17 +68,53 @@ def contacto(request):
 
     return render(request, 'contacto.html', {'form':form})
 
+class NuevoPost(CreateView):
+    model = Post
+    fields = '__all__' 
+    success_url = '../all_post/'
 
-def nuevo_post(request):
-    if request.method == 'POST':
-        form = PostForm(request.POST)
+class PostEdit(UpdateView):
+    model = Post
+    fields= '__all__' 
+    success_url= '../all_post/' 
 
-        if form.is_valid():
-            new_form = form.save(commit=False)
-            new_form.post = form
-            new_form.save()
-            return HttpResponseRedirect('.')
-    else:
-        form = PostForm
+class PostDelete(DeleteView):
+    model = Post
+    success_url= '../all_post/'
 
-    return render(request, 'nuevo_post.html', {'form':form})
+class CommentEdit(UpdateView):
+    model = Comentarios
+    fields= ['nombre','email','comentario']
+    success_url= '../all_post/' 
+
+class CommentDelete(DeleteView):
+    model = Comentarios
+    success_url= '../all_post/'
+
+class CatEdit(UpdateView):
+    model = Categoria
+    fields= ['title']
+    success_url= '../categorias/' 
+
+class CatDelete(DeleteView):
+    model = Categoria
+    success_url= '../categorias/'
+
+class CatAdd(CreateView):
+    model = Categoria
+    fields = '__all__' 
+    success_url = '../categorias/'
+
+class AutorEdit(UpdateView):
+    model = Autor
+    fields= ['title']
+    success_url= '../autores/' 
+
+class AutorDelete(DeleteView):
+    model = Autor
+    success_url= '../autores/'
+
+class AutorAdd(CreateView):
+    model = Autor
+    fields = '__all__' 
+    success_url = '../autores/'

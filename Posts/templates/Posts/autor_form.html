@@ -3,10 +3,9 @@
 {% load static %}
 
 {% block contenidoDinamico %}
-
 <main class="container d-flex justify-content-center">
     <div class="bg-light p-4 w-75 rounded ">
-        <h1>Contacto</h1>
+        <h1>Nuevo Autor</h1>
         <form action="" method="post">{% csrf_token %}
             <table>
                 {{form.as_table}}

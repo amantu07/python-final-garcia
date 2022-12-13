@@ -6,17 +6,14 @@
 
 <div class="container text-center">
     <p>
-    <h1>Bienvenidos a nuestro Blog</h1>
-    </p>
-    <p>
-    <h3>Estos son algunos de nuestros articulos destacados:</h3>
+    <h2>Resultados:</h2>
     </p>
 </div>
 
 <div style="display: flex; flex-wrap: wrap; justify-content: center">
-    {%if destacados%}
-    {% for publicacion in destacados %}
-        <section class="bg-light p-4 m-2 rounded" style="width: 20%">
+    {%if post%}
+    {% for publicacion in post %}
+    <section class="bg-light p-4 m-2 rounded" style="width: 20%">
         <h3><a href="{% url 'post_detail' publicacion.id  %}" class="link-dark">{{ publicacion.titulo }}</a></h3>
         <p class="lead">{{ publicacion.contenido|slice:":100" }}...</p>
         <p class="small"><b>{{ publicacion.autor }}</b> | {{ publicacion.fecha }}</p>
@@ -24,15 +21,13 @@
         <a class="btn btn-sm btn-dark" href="{% url 'post_detail' publicacion.id  %}" role="button">Leer Mas &raquo;</a>
         <a class="btn btn-sm btn-dark" href="{% url 'Edit' publicacion.id %}" role="button">Editar</a>
         <a class="btn btn-sm btn-danger" href="{% url 'Delete' publicacion.id %}" role="button">Borrar</a>
-        </section>
-    {% endfor %}
-
-
-    {% else %}
-    <section class="bg-light p-4 m-2 rounded" style="width: 20%">
-        No se encontraron articulos destacados
     </section>
-    {% endif %}
+{% endfor %}
+
+{% else %}
+<div class="container d-flex justify-content-center">
+    No se encontraron resultados
 </div>
+  {% endif %}
 
 {% endblock %}
